@@ -1,18 +1,18 @@
-.. _getting_started:
+import moviepy.editor as mp
 
-Getting started with MoviePy
-------------------------------
+# Load your video
+clip = mp.VideoFileClip("export.mov")
 
-This section explain everything you need to start editing with MoviePy. To go further, have a look at the :ref:`user_guide` and the :ref:`reference_manual`.
+# Get video size
+width, height = clip.size
 
+# Create black box for the right third of the screen
+dee_box_width = width // 3
+black_box = mp.ColorClip(size=(dee_box_width, height), color=(0, 0, 0), duration=clip.duration)
+black_box = black_box.set_position(("right", "top"))
 
-.. toctree::
-   :maxdepth: 1
+# Overlay the black box
+final = mp.CompositeVideoClip([clip, black_box])
 
-   install
-   quick_presentation
-   moviepy_10_minutes
-   docker
-   updating_to_v2
-   FAQ
-
+# Export final video
+final.write_videofile("export_no_dee.mp4", codec="libx264", audio_codec="aac")
